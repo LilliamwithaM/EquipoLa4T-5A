@@ -1,74 +1,57 @@
-import { fx_1eX } from "./f(x)=1ex";
-import { fx_2x } from "./f(x)=2x";
-import { fx_XxX } from "./f(x)=XxX";
+import { func2x } from "./func2x";
+import { funcx2 } from "./funcx2";
+import { func1x } from "./func1x";
 
-export function simpson(f: string, x0: number, x1: number, num_seg: number, dof: number) {
-    let E = 0.00001;
-    let x = 0;
-    let xC;
-    let y;
-    let area_seg;
-    let P = 0;
-    let PF;
-    let contador = 0;
-    const arrP = [];
-    let margenE = 1;
-    do {
-        margenE = 0;
-        let W = (x1 - x0) / num_seg;
-        let W3 = W / 3;
-        x = x0;
-        for (let i = 0; i <= num_seg; i++) {
-            if (f.toLowerCase() == "2x") {
-                xC = fx_2x(x)
-            } else if (f.toLowerCase() == "x*x") {
-                xC = fx_XxX(x)
-            } else if (f.toLowerCase() == "1/x") {
-                xC = fx_1eX(x)
-            } else {
-                xC = fx_2x(x)
+export function simpson(x0:number, x1:number, num_seg:number,op:string){
+
+let w = (x1-x0)/num_seg;
+let wDiv3 = w/3;
+let x = 1, i = 0, y = 0, integral = 0;
+let area;
+if(op != 'd'){
+    x = 0;
+}
+ 
+    do{
+  
+        if(i == 0 || i == num_seg){
+            if(op == 'm'){
+                y = func2x(x) * 1;
+            }else if(op == 'd'){
+                y = func1x(x) * 1;
+            }else{
+                y = funcx2(x) * 1;
+            }            
+            area = y * wDiv3;
+
+        }else if(i%2 == 0){
+            if(op == 'm'){
+                y = func2x(x) * 2;
+            }else if(op == 'd'){
+                y = func1x(x) * 2;
+            }else{
+                y = funcx2(x) * 2;
             }
+            area = y * wDiv3;
 
-            if (i == 0 || i == num_seg) {
-                y = xC * 1
-            } else {
-                ((i % 2!) == 0) ? y = xC * 2 : y = xC * 4
+        }else{
+            if(op == 'm'){
+                y = func2x(x) * 4;
+            }else if(op == 'd'){
+                y = func1x(x) * 4;
+            }else{
+                y = funcx2(x) * 4;
             }
-            area_seg = y * W3;
-            P += area_seg;
-            x += W;
+            area = y * wDiv3;
         }
-        arrP.push(P);
-        num_seg = num_seg * 2;
-        contador += 1;
-        if (contador > 0) {
-            margenE = arrP[0] - arrP[contador];
-        }
-        PF = parseFloat(P.toFixed(5))
-        P = 0;
-    } while (margenE > E || contador < 2)
 
-    if (PF == 0) {
-        PF = 1;
-    }
+        x = x+w;
+        integral = integral + area;
+        i++;
+    }while(i<=num_seg);
 
-    return PF
-}
+    let p = Number((integral).toFixed(5));
 
-f(x)=1ex.ts
+    return p;
 
-export function fx_1eX(x: number){
-    return 1/x
-}
-
-f(x)=2x.ts
-
-export function fx_2x(x: number){
-    return x*2
-}
-
-f(x)=XxX.ts
-
-export function fx_XxX(x: number){
-    return x*x
 }
