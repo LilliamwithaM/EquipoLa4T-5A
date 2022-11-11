@@ -1,57 +1,56 @@
-import { func2x } from "./func2x";
-import { funcx2 } from "./funcx2";
-import { func1x } from "./func1x";
-
-export function simpson(x0:number, x1:number, num_seg:number,op:string){
-
-let w = (x1-x0)/num_seg;
-let wDiv3 = w/3;
-let x = 1, i = 0, y = 0, integral = 0;
-let area;
-if(op != 'd'){
-    x = 0;
-}
- 
-    do{
+const compute_fx = (
+    x0: number,
+    x1: number,
+    w: number,
+    func: Function
+  ): number[] => {
+    let xValuesSet: number[] = [];
+    let fxValuesSet: number[] = [];
+    let x: number = x0;
+    while (x <= x1) {
+      xValuesSet.push(x);
+      fxValuesSet.push(func(x));
+      x = x + w;
+    }
+    return fxValuesSet;
+  };
   
-        if(i == 0 || i == num_seg){
-            if(op == 'm'){
-                y = func2x(x) * 1;
-            }else if(op == 'd'){
-                y = func1x(x) * 1;
-            }else{
-                y = funcx2(x) * 1;
-            }            
-            area = y * wDiv3;
-
-        }else if(i%2 == 0){
-            if(op == 'm'){
-                y = func2x(x) * 2;
-            }else if(op == 'd'){
-                y = func1x(x) * 2;
-            }else{
-                y = funcx2(x) * 2;
-            }
-            area = y * wDiv3;
-
-        }else{
-            if(op == 'm'){
-                y = func2x(x) * 4;
-            }else if(op == 'd'){
-                y = func1x(x) * 4;
-            }else{
-                y = funcx2(x) * 4;
-            }
-            area = y * wDiv3;
+  const simpson = (
+    x0: number,
+    x1: number,
+    num_seg: number,
+    func: Function,
+    E: number
+  ) => {
+    let error;
+    let perror = 0;
+    do {
+      let w = (x1 - x0) / num_seg;
+      let fxValuesSet = compute_fx(x0, x1, w, func);
+      let sumFX: number[] = [];
+      // multiplicar f(x) * multiplicador
+      fxValuesSet.forEach((value, index) => {
+        if (index === 0 || index === fxValuesSet.length - 1) {
+          sumFX.push(value * 1);
+        } else if (index % 2 === 0) {
+          sumFX.push(value * 2);
+        } else {
+          sumFX.push(value * 4);
         }
-
-        x = x+w;
-        integral = integral + area;
-        i++;
-    }while(i<=num_seg);
-
-    let p = Number((integral).toFixed(5));
-
+      });
+      // sumar f(x)*mult
+      let sumFX_mult = 0;
+      sumFX.forEach((val) => {
+        sumFX_mult += val;
+      });
+      // obtener p
+      var p = (sumFX_mult * w) / 3;
+      // obtener error
+      error = p - perror;
+      num_seg = num_seg * 2;
+      perror = p;
+    } while (error > E);
     return p;
-
-}
+  };
+  
+  export { simpson };
