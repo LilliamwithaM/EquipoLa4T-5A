@@ -52,8 +52,8 @@ const compute_fx = (
     } while (error > E);
     return p;
   };
-  
-export { simpson };
+
+export  { simpson };
 
 f(x) = 1ex.ts
 export function fx_1eX(x : number) {
