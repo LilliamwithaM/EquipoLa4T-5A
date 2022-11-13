@@ -54,18 +54,3 @@ const compute_fx = (
   };
   
 export { simpson };
-
-f(x) = 1ex.ts
-export function fx_1eX(x : number) {
-  return 1/x
-}
-
-f(x) = 2x.ts
-export function fx_2x (x: number) {
-  return x*2
-}
-
-f(x) = XxX.ts
-export function fx_XxX (x: number) {
-  return x*x
-}
