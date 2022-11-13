@@ -57,7 +57,7 @@ const compute_fx = (
 
 
 f(x) = 1ex.ts
-tion fx_1eX(x : number) {
+export function fx_1eX(x : number) {
   return 1/x
 }
 
