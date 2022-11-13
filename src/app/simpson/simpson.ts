@@ -53,8 +53,7 @@ const compute_fx = (
     return p;
   };
   
-  export { simpson };
-
+export { simpson };
 
 f(x) = 1ex.ts
 export function fx_1eX(x : number) {
@@ -70,5 +69,3 @@ f(x) = XxX.ts
 export function fx_XxX (x: number) {
   return x*x
 }
-
-//comentario de prueba
