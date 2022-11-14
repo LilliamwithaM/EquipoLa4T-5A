@@ -52,5 +52,5 @@ const compute_fx = (
     } while (error > E);
     return p;
   };
-  
-  export { simpson };
+
+export  { simpson };
